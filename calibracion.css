@@ -1,0 +1,56 @@
+/* C.U.M. · Receptor minimalista / una sola pantalla */
+:root {
+  color-scheme: dark;
+  --bg: #06100b;
+  --panel: #0a1910;
+  --line: #294334;
+  --green: #9df0bf;
+  --light: #e2f3e7;
+  --muted: #8ea799;
+  font-family: Consolas, "Courier New", monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--light); }
+.access-pending .game-shell { display: none; }
+.game-shell { width: min(650px, 100%); min-height: 100dvh; margin: 0 auto; padding: 24px 20px 18px; display: flex; flex-direction: column; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.brand { color: var(--green); font-size: 20px; font-weight: 800; letter-spacing: .17em; text-decoration: none; }
+.phase { color: var(--muted); font-size: 10px; letter-spacing: .07em; }
+.intro { padding: 42px 0 25px; }
+.eyebrow, .small-label { color: var(--green); font-size: 10px; letter-spacing: .09em; }
+.eyebrow { margin: 0 0 14px; }
+h1 { font-size: clamp(27px, 5vw, 38px); letter-spacing: -.045em; line-height: 1.15; margin: 0 0 16px; }
+.intro > p:last-child { color: #b4cbbd; font-size: 13px; line-height: 1.8; margin: 0; }
+.intro strong { color: var(--light); font-weight: 600; }
+.receiver { border: 1px solid var(--line); background: var(--panel); padding: clamp(22px, 5vw, 36px); text-align: center; }
+.small-label { color: var(--muted); margin: 0; }
+.frequency { display: flex; align-items: baseline; justify-content: center; gap: 10px; color: var(--green); margin: 17px 0 22px; }
+.frequency output { font-size: clamp(58px, 12vw, 79px); line-height: 1; letter-spacing: -.06em; font-weight: 700; font-variant-numeric: tabular-nums; }
+.frequency span { font-size: 15px; }
+#frequency-slider { width: 100%; accent-color: var(--green); cursor: pointer; height: 28px; margin: 0; }
+.limits, .signal-heading { display: flex; justify-content: space-between; gap: 10px; }
+.limits { color: #7d9c86; font-size: 10px; margin-top: 3px; }
+.tune-buttons { display: flex; justify-content: center; gap: 12px; margin-top: 24px; }
+.tune-buttons button { width: 114px; border: 1px solid #4b7c5c; background: #0d2617; color: var(--green); padding: 10px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+.tune-buttons button:hover { background: #173b25; }
+.tune-buttons button:disabled { opacity: .45; cursor: default; }
+.signal { margin-top: 35px; }
+.signal-heading { color: #8fae98; font-size: 10px; text-align: left; }
+.signal-heading strong { color: var(--green); font-weight: 600; }
+.meter { height: 7px; background: #183022; margin: 12px 0 0; overflow: hidden; }
+.meter span { display: block; background: var(--green); height: 100%; transition: width .17s ease; }
+.feedback { color: #b4cbbd; font-size: 11px; line-height: 1.6; min-height: 19px; margin: 18px 0 0; }
+.receiver.completed { border-color: var(--green); box-shadow: 0 0 30px #244b3029; }
+.completed .feedback { color: var(--green); }
+.footer { display: flex; justify-content: space-between; gap: 10px; padding: 24px 0 0; margin-top: auto; color: #6a9278; font-size: 10px; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 520px) {
+  .game-shell { padding: 17px 14px; }
+  .intro { padding: 31px 0 24px; }
+  .intro > p:last-child { font-size: 12px; }
+  .receiver { padding: 24px 17px; }
+  .frequency output { font-size: 63px; }
+  .footer { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) { .meter span { transition: none; } }

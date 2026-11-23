@@ -1,0 +1,650 @@
+
+/* C.U.M. — FASE 02: TRIANGULACIÓ */
+
+[hidden] {
+    display: none !important;
+}
+
+/* =====================================
+   MAPA
+   ===================================== */
+
+.map-panel {
+    border: 1px solid var(--line, #345840);
+    background: var(--panel, #0b1911);
+}
+
+.map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+    gap: 10px;
+    color: var(--green);
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.map-container {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--line, #345840);
+    border-bottom: 1px solid var(--line, #345840);
+}
+
+#campus-map {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.map-background {
+    filter: grayscale(100%)
+            sepia(25%)
+            hue-rotate(75deg)
+            brightness(65%);
+}
+
+.map-footer {
+    padding: 11px 14px;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1px;
+}
+
+/* =====================================
+   NODES INICIALS
+   ===================================== */
+
+.map-node {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.map-node.active {
+    opacity: 1;
+}
+
+.node-core {
+    fill: #9df0bf;
+    filter: drop-shadow(0 0 8px #9df0bf);
+}
+
+.node-wave {
+    fill: rgba(157, 240, 191, 0.15);
+    stroke: #9df0bf;
+    stroke-width: 2;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.map-node.active .node-wave {
+    animation: node-pulse 2s infinite;
+}
+
+.map-node text {
+    fill: #c5ffda;
+    font-size: 25px;
+    font-weight: bold;
+    paint-order: stroke;
+    stroke: #06100b;
+    stroke-width: 5px;
+}
+
+@keyframes node-pulse {
+
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+
+}
+
+/* =====================================
+   IDENTIFICACIÓ DELS PUNTS
+   ===================================== */
+
+.references {
+    margin-top: 26px;
+}
+
+.reference-card {
+    padding: 16px;
+    border: 1px solid var(--line, #345840);
+    background: var(--panel, #0b1911);
+    margin-top: 12px;
+    transition: border-color 0.3s ease;
+}
+
+.reference-id {
+    display: block;
+    color: var(--green);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+}
+
+.reference-card label {
+    display: block;
+    color: var(--light, #dceee2);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.answer-row {
+    display: flex;
+    gap: 8px;
+}
+
+.answer-row input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
+    font: inherit;
+    font-size: 13px;
+    color: var(--green);
+    background: var(--bg, #06100b);
+    border: 1px solid var(--line, #345840);
+    border-radius: 0;
+}
+
+.answer-row input::placeholder {
+    color: #587363;
+    font-size: 11px;
+}
+
+.answer-row button {
+    width: 44px;
+    flex-shrink: 0;
+    background: #122c1c;
+    border: 1px solid #4b7c5c;
+    color: var(--green);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.answer-row button:hover {
+    background: #204b30;
+}
+
+.answer-feedback {
+    margin: 8px 0 0;
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+.answer-feedback:empty {
+    display: none;
+}
+
+/* Resposta correcta */
+
+.reference-card.completed {
+    border-color: #548b68;
+}
+
+.reference-card.completed .answer-feedback {
+    color: var(--green);
+}
+
+.reference-card.completed input,
+.reference-card.completed button {
+    opacity: 0.7;
+    cursor: default;
+}
+
+/* Resposta incorrecta */
+
+.reference-card.incorrect {
+    border-color: #a35454;
+}
+
+.reference-card.incorrect .answer-feedback {
+    color: #e89292;
+}
+
+/* =====================================
+   PANELL DE SINCRONITZACIÓ
+   ===================================== */
+
+#references-completed {
+    border: 1px solid #548b68;
+    background: var(--panel, #0b1911);
+    padding: 20px;
+    margin-top: 24px;
+}
+
+#references-completed h2 {
+    font-size: 21px;
+    margin: 12px 0;
+}
+
+#references-completed > p:not(.eyebrow) {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* =====================================
+   NODES GIRATORIS
+   ===================================== */
+
+.map-node.station {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.map-node.station .node-wave {
+    animation: none;
+    opacity: 0;
+}
+
+.map-node.station .node-core {
+    fill: #10291a;
+    stroke: #9df0bf;
+    stroke-width: 3px;
+    filter: none;
+}
+
+/* Node seleccionat */
+
+.map-node.station.selected .node-core {
+    stroke: #e9c17d;
+    stroke-width: 5px;
+    filter: drop-shadow(0 0 9px #e9c17d);
+}
+
+/* Puntes de connexió */
+
+.station-port {
+    fill: #284d36;
+    stroke: #9df0bf;
+    stroke-width: 2.5px;
+}
+
+.map-node.aligned .station-port {
+    fill: #9df0bf;
+}
+
+/* Connexions entre nodes */
+
+.network-link {
+    stroke: #9df0bf;
+    stroke-width: 4px;
+    opacity: 0.25;
+    stroke-dasharray: 8 12;
+    transition: opacity 0.3s ease;
+}
+
+.network-link.connected {
+    opacity: 1;
+    stroke-dasharray: none;
+    filter: drop-shadow(0 0 5px #9df0bf);
+}
+
+/* =====================================
+   SELECTOR D'ESTACIONS
+   ===================================== */
+
+.station-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 20px 0 12px;
+}
+
+.station-selector button {
+    padding: 13px 4px;
+    border: 1px solid #345840;
+    background: #0a1910;
+    color: #8ca997;
+    font-size: 10px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.station-selector button.selected {
+    background: #1c3e29;
+    color: #9df0bf;
+    border-color: #9df0bf;
+}
+
+/* =====================================
+   CONTROLS DE ROTACIÓ
+   ===================================== */
+
+.rotation-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.rotation-controls button {
+    background: #122b1c;
+    color: #9df0bf;
+    border: 1px solid #4b7c5c;
+    padding: 15px 8px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.rotation-controls button:hover {
+    background: #20472e;
+}
+
+.rotation-controls button:active {
+    background: #315e3f;
+}
+
+.alignment-status {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 17px;
+    color: #9df0bf;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+}
+
+.reset-button {
+    background: transparent;
+    border: none;
+    color: #789687;
+    font-family: inherit;
+    font-size: 10px;
+    margin-top: 18px;
+    padding: 8px 0;
+    cursor: pointer;
+}
+
+#references-completed button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* =====================================
+   TRIANGULACIÓ FINAL
+   ===================================== */
+
+.target-line {
+    stroke: #9df0bf;
+    stroke-width: 3px;
+    stroke-dasharray: 9 7;
+    animation: target-appear 0.8s ease both;
+}
+
+@keyframes target-appear {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+.target-point {
+    fill: #efc17a;
+    filter: drop-shadow(0 0 10px #efc17a);
+}
+
+.target-ring {
+    fill: none;
+    stroke: #efc17a;
+    stroke-width: 3px;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: target-pulse 1.5s infinite;
+}
+
+@keyframes target-pulse {
+
+    from {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(1.7);
+        opacity: 0;
+    }
+
+}
+
+/* =====================================
+   RESULTAT DE LA LOCALITZACIÓ
+   ===================================== */
+
+#location-result {
+    border: 1px solid #548b68;
+    background: var(--panel, #0b1911);
+    margin-top: 24px;
+    padding: 20px;
+}
+
+#location-result h2 {
+    font-size: 23px;
+    margin: 12px 0;
+}
+
+#location-result p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #adc7b6;
+}
+
+/* Fotografia */
+
+.location-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 18px 0;
+    border: 1px solid #395b45;
+    animation: image-recovery 2s ease both;
+}
+
+@keyframes image-recovery {
+
+    from {
+        filter: blur(18px) brightness(0.4);
+    }
+
+    to {
+        filter: blur(0) brightness(1);
+    }
+
+}
+
+#photo-feedback:empty {
+    display: none;
+}
+
+/* =====================================
+   FORMULARI DEL CODI UV
+   ===================================== */
+
+.uv-form {
+    margin-top: 25px;
+    padding-top: 22px;
+    border-top: 1px solid #345840;
+}
+
+#location-result .uv-form .eyebrow {
+    color: #9df0bf;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.uv-form label {
+    display: block;
+    margin: 20px 0 10px;
+    color: #9df0bf;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.uv-form input {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #06100b;
+    border: 1px solid #548b68;
+    border-radius: 0;
+    color: #9df0bf;
+    font-family: inherit;
+    font-size: 16px;
+    outline: none;
+}
+
+.uv-form input:focus {
+    border-color: #9df0bf;
+}
+
+.uv-form input::placeholder {
+    color: #68816e;
+}
+
+.uv-form button {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 15px;
+    background: #9df0bf;
+    border: 1px solid #9df0bf;
+    color: #07110c;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+
+.uv-form button:hover {
+    background: #c4ffda;
+}
+
+#location-result #uv-feedback {
+    min-height: 18px;
+    margin-top: 12px;
+    font-size: 11px;
+    color: #e89292;
+}
+
+#uv-feedback:empty {
+    min-height: 0;
+    margin-top: 0;
+}
+
+/* =====================================
+   CONFIRMACIÓ DEL CODI UV
+   ===================================== */
+
+#uv-completed {
+    margin-top: 25px;
+    padding: 20px;
+    border: 1px solid #548b68;
+    background: #10271a;
+}
+
+#uv-completed h2 {
+    font-size: 21px;
+    margin: 12px 0;
+}
+
+#location-result #uv-completed .eyebrow {
+    color: #9df0bf;
+}
+
+#location-result #uv-completed .uv-success {
+    margin-top: 20px;
+    padding: 14px 8px;
+    background: #173a24;
+    color: #9df0bf;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-align: center;
+    font-size: 11px;
+}
+
+/* =====================================
+   ESTAT DE LA LOCALITZACIÓ
+   ===================================== */
+
+.location-status {
+    padding: 14px;
+    margin-top: 24px;
+    background: #14291c;
+    border: 1px solid #548b68;
+    color: #9df0bf;
+    font-size: 11px;
+    text-align: center;
+}
+
+/* =====================================
+   ADAPTACIÓ A MÒBILS
+   ===================================== */
+
+@media (max-width: 520px) {
+
+    .reference-card {
+        padding: 13px;
+    }
+
+    .reference-card label {
+        font-size: 12px;
+    }
+
+    .answer-row input {
+        font-size: 16px;
+    }
+
+    .map-header {
+        font-size: 9px;
+    }
+
+    .station-selector button {
+        font-size: 9px;
+    }
+
+    .rotation-controls button {
+        font-size: 11px;
+    }
+
+    #references-completed,
+    #location-result {
+        padding: 15px;
+    }
+
+    #uv-completed {
+        padding: 15px;
+    }
+
+}
+
+/* =====================================
+   ACCESSIBILITAT
+   ===================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .node-wave,
+    .target-ring,
+    .target-line,
+    .location-image img {
+        animation: none !important;
+    }
+
+}

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071118">
+  <meta name="description" content="Terminal de operaciones de la Central de Ubicación y Monitoreo.">
+  <title>C.U.M. | Terminal de operaciones</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23071118'/%3E%3Cpath d='M32 7 53 15v16c0 14-9 22-21 27C20 53 11 45 11 31V15z' fill='none' stroke='%239df0bf' stroke-width='3'/%3E%3Ccircle cx='32' cy='30' r='8' fill='none' stroke='%239df0bf' stroke-width='3'/%3E%3Ccircle cx='32' cy='30' r='2' fill='%239df0bf'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="backdrop-grid" aria-hidden="true"></div>
+    <div class="backdrop-glow" aria-hidden="true"></div>
+
+    <!-- Animació de connexió, visible a cada entrada -->
+    <div id="boot" class="boot-screen" aria-label="Conexión a la terminal">
+      <svg class="agency-seal" width="56" height="56" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 3.5 42 11v12.4c0 11.2-8 17.4-18 21.1C14 40.8 6 34.6 6 23.4V11L24 3.5Z" stroke="currentColor" stroke-width="1.7"></path>
+        <path d="M24 10.5 35.3 15v8.3c0 7.7-5.1 12.2-11.3 14.9C17.8 35.5 12.7 31 12.7 23.3V15L24 10.5Z" stroke="currentColor" opacity=".3"></path>
+        <circle cx="24" cy="23" r="8.5" stroke="currentColor" stroke-width="1.5"></circle>
+        <circle cx="24" cy="23" r="2.6" fill="currentColor"></circle>
+        <path d="M24 12v5M24 29v5M13 23h5M30 23h5" stroke="currentColor" stroke-width="1.5"></path>
+      </svg>
+      <p class="eyebrow">TERMINAL DE INTELIGENCIA // C.U.M.</p>
+      <h1>ESTABLECIENDO ENLACE</h1>
+      <div id="boot-console" class="boot-console" role="status" aria-live="polite">
+        <span class="console-cursor">▌</span>
+      </div>
+      <div class="progress-track"><div id="boot-progress" style="width:0%"></div></div>
+      <button id="skip-boot" class="link-button boot-skip" type="button">OMITIR INTRODUCCIÓN →</button>
+    </div>
+
+    <!-- Pantalla de credenciales: apareix després de la connexió i abans de la terminal. -->
+    
+    <!-- VERIFICACIÓ DE CREDENCIALS -->
+    <section id="access" class="auth-screen"
+            aria-label="Verificación de agente" hidden>
+
+      <div id="access-card" class="auth-window">
+
+        <!-- Barra superior de la consola -->
+        <div class="auth-bar">
+          <span class="auth-bar-title">
+            &gt; CUM_SECURE_AUTH.EXE
+          </span>
+
+          <span class="access-card__status">
+            ● EN ESPERA
+          </span>
+        </div>
+
+        <div class="auth-content">
+
+          <!-- Identificació de la central -->
+          <p class="auth-path">
+            C:\CUM\SYSTEM\AUTHENTICATION
+          </p>
+
+          <h1 class="auth-logo">
+            C.U.M.<span class="auth-cursor">_</span>
+          </h1>
+
+          <p class="auth-subtitle">
+            CENTRAL DE UBICACIÓN Y MONITOREO
+          </p>
+
+          <!-- Missatges del sistema -->
+          <div class="auth-log">
+            <p>[OK] Canal seguro establecido.</p>
+            <p>[OK] Servidor de autenticación disponible.</p>
+            <p>[SYS] Introduzca sus credenciales.</p>
+          </div>
+
+          <!-- Formulari -->
+          <form id="access-form" autocomplete="off" novalidate>
+
+            <label for="agent-id">agent_id:</label>
+
+            <input
+              id="agent-id"
+              name="agent-id"
+              class="auth-input"
+              type="text"
+              placeholder="Identificador"
+              autocapitalize="characters"
+              autocomplete="off"
+              spellcheck="false"
+              maxlength="40"
+              required
+            >
+
+            <label for="access-pin">access_key:</label>
+
+            <div class="auth-password">
+              <input
+                id="access-pin"
+                name="access-pin"
+                class="auth-input"
+                type="password"
+                placeholder="Clave de acceso"
+                autocomplete="off"
+                maxlength="40"
+                required
+              >
+
+              <button
+                id="reveal-pin"
+                type="button"
+                class="auth-reveal"
+                aria-label="Mostrar clave"
+                aria-pressed="false"
+              >
+                MOSTRAR
+              </button>
+            </div>
+
+            <p id="access-feedback"
+              class="access-feedback"
+              role="status"
+              aria-live="polite">
+              STATUS: WAITING FOR INPUT_
+            </p>
+
+            <button
+              id="access-submit"
+              type="submit"
+              class="auth-submit"
+            >
+              [ AUTENTICAR AGENTE ]
+            </button>
+
+          </form>
+
+          <p class="auth-footer">
+            // ACCESO RESTRINGIDO · OP-067
+          </p>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Pantalla principal -->
+  <main id="terminal" class="terminal terminal--compact" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <svg class="agency-seal" width="38" height="38"
+            viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <path d="M24 3.5 42 11v12.4c0 11.2-8 17.4-18 21.1C14 40.8 6 34.6 6 23.4V11L24 3.5Z"
+                stroke="currentColor" stroke-width="1.7"></path>
+          <circle cx="24" cy="23" r="8.5"
+                  stroke="currentColor" stroke-width="1.5"></circle>
+          <circle cx="24" cy="23" r="2.6" fill="currentColor"></circle>
+          <path d="M24 12v5M24 29v5M13 23h5M30 23h5"
+                stroke="currentColor" stroke-width="1.5"></path>
+        </svg>
+
+        <div class="brand__text">
+          <span class="brand__short">C.U.M.</span>
+          <span class="brand__full">
+            CENTRAL DE UBICACIÓN Y MONITOREO
+          </span>
+        </div>
+      </div>
+
+      <button id="logout" class="logout-button" type="button">
+        CERRAR SESIÓN
+      </button>
+    </header>
+
+    <div class="compact-dashboard">
+
+      <!-- FITXA DE MARIANNE -->
+      <section class="panel agent-card">
+        <div class="panel-heading">
+          <span>01 / IDENTIFICACIÓN</span>
+          <span class="panel-heading__ref">ACCESO VALIDADO</span>
+        </div>
+
+        <div class="agent-card__body">
+
+          <div class="agent-card__photo">
+            <img src="marianne.png"
+                alt="Fotografía de Marianne">
+          </div>
+          <div class="agent-card__details">
+
+            <p class="agent-card__eyebrow">AGENTE AUTORIZADA</p>
+
+            <h1 data-agent>AGENTE MARIANNE</h1>
+
+            <p class="agent-card__alias">
+              ALIAS: «SEÑORA PRAXIS»
+            </p>
+
+            <div class="agent-card__facts">
+              <p><span>EDAD:</span> 23 años (ya me jodería)</p>
+              <p><span>ALTURA:</span> 1,60 m (por debajo de la media)</p>
+              <p><span>PUNTUALIDAD:</span> Concepto desconocido</p>
+              <p><span>AFILIACIONES:</span> K-pop y otaku (lo niega todo)</p>
+            </div>
+
+            <p class="verified">
+              <span class="verified-check">✓</span>
+              IDENTIDAD CONFIRMADA
+            </p>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TRANSMISSIONS -->
+      <section id="status-panel" class="panel status-panel"
+              aria-live="polite">
+
+        <div class="panel-heading">
+          <span>02 / TRANSMISIONES</span>
+          <span class="panel-heading__ref">
+            EXP. <span data-expediente>OP-001</span>
+          </span>
+        </div>
+
+        <!-- MISSIÓ BLOQUEJADA -->
+        <div id="waiting" class="mission-status">
+          <span class="status-tag">COMUNICACIÓN PROGRAMADA</span>
+
+          <h2>
+            Próxima transmisión:
+            <span class="transmission-hour">11:00</span>
+          </h2>
+
+          <p>
+            Agente <span data-agent-short>Marianne</span>,
+            la Central enviará nuevas instrucciones a las 11:00.
+            Permanezca atenta y conserve el material asignado.
+          </p>
+
+          <div class="status-message">
+            <span class="status-blink"></span>
+            EN ESPERA DE NUEVAS INSTRUCCIONES
+          </div>
+        </div>
+
+        <!-- MISSIÓ DESBLOQUEJADA: alerta de les 11:00 -->
+        <div id="ready" class="mission-status" hidden>
+          <span class="status-tag status-tag--ready">⚠ TRANSMISIÓN ANÓMALA DETECTADA</span>
+
+          <h2>Señal interceptada</h2>
+
+          <p>
+            Agente Marianne, nuestros sistemas han detectado una señal
+            extremadamente débil vinculada al objeto clasificado.
+          </p>
+
+          <p>
+            La transmisión presenta interferencias graves y los datos
+            de localización están corruptos. No podemos identificar su origen.
+          </p>
+
+          <p>
+            Necesitamos su intervención para recuperar la frecuencia
+            y localizar la fuente de emisión.
+          </p>
+
+          <div class="status-message status-message--ready">
+            <span class="status-blink"></span>
+            SEÑAL: 08% · UBICACIÓN: DESCONOCIDA
+          </div>
+
+          <button id="show-report" class="primary-button" type="button">
+            INICIAR RECUPERACIÓN DE SEÑAL <span>→</span>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Radar ocult, conservat per compatibilitat amb app.js -->
+    <div class="radar" hidden>
+      <span class="radar__label--bottom">NO SIGNAL</span>
+    </div>
+
+    <footer class="footer">
+      <span>C.U.M. // ACCESO RESTRINGIDO</span>
+      <span>
+        HORA LOCAL <strong id="clock">--:--:--</strong>
+      </span>
+    </footer>
+
+    <!-- Controls de prova -->
+    <div id="demo-controls" class="dev-controls" hidden>
+      <span>
+        MODO DE PRUEBA · NO AÑADIR ?demo=1 AL QR FINAL
+      </span>
+      <button id="demo-toggle" type="button">
+        SIMULAR DESBLOQUEO
+      </button>
+    </div>
+
+  </main>
+  </div>
+</body>
+</html>

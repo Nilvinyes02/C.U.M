@@ -1,0 +1,351 @@
+
+/* C.U.M. — TRANSMISSIONS CLASSIFICADES */
+
+:root {
+
+    --bg: #071118;
+    --green: #9df0bf;
+    --light: #e0f1e6;
+    --muted: #86a497;
+    --line: rgba(157, 240, 191, 0.18);
+
+}
+
+* {
+    box-sizing: border-box;
+}
+
+[hidden],
+body.access-pending {
+    display: none !important;
+}
+
+body {
+
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    background:
+        radial-gradient(
+            ellipse at top right,
+            #10271e,
+            transparent 70%
+        ),
+        var(--bg);
+
+    color: var(--light);
+
+    font-family: Consolas, "Courier New", monospace;
+
+}
+
+/* =====================================
+   CONTENIDOR PRINCIPAL
+   ===================================== */
+
+.report-shell {
+
+    width: min(700px, 100%);
+    margin: 0 auto;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    padding: 35px 24px 20px;
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+/* =====================================
+   CAPÇALERA
+   ===================================== */
+
+.report-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 12px;
+
+    padding-bottom: 22px;
+
+    border-bottom: 1px solid var(--line);
+
+}
+
+.brand {
+
+    color: var(--green);
+
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 4px;
+
+}
+
+#report-reference {
+
+    font-size: 10px;
+    color: var(--muted);
+
+}
+
+/* =====================================
+   INFORME
+   ===================================== */
+
+.report {
+
+    flex: 1;
+
+    padding: 38px 0;
+
+}
+
+.report-classification {
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: var(--green);
+
+    font-size: 10px;
+    letter-spacing: 1.5px;
+
+    margin: 0 0 20px;
+
+}
+
+.indicator {
+
+    width: 7px;
+    height: 7px;
+
+    background: var(--green);
+    border-radius: 50%;
+
+    box-shadow: 0 0 10px var(--green);
+
+    animation: blink 1.2s infinite;
+
+}
+
+.report h1 {
+
+    font-family: system-ui, sans-serif;
+
+    font-size: clamp(25px, 5vw, 36px);
+
+    margin: 0 0 28px;
+
+    font-weight: 600;
+
+}
+
+#report-content {
+
+    color: #b9d2c1;
+
+    font-size: 14px;
+    line-height: 1.9;
+
+}
+
+#report-content p {
+
+    margin: 0 0 20px;
+
+    overflow-wrap: break-word;
+
+}
+
+#report-content p.final-line {
+
+    color: var(--green);
+
+}
+
+/* =====================================
+   CURSOR INTERMITENT
+   ===================================== */
+
+#cursor {
+
+    color: var(--green);
+
+    font-size: 16px;
+
+    animation: blink 0.8s steps(1) infinite;
+
+}
+
+@keyframes blink {
+
+    50% {
+        opacity: 0;
+    }
+
+}
+
+#report-end {
+
+    margin-top: 30px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    letter-spacing: 1px;
+
+}
+
+/* =====================================
+   BOTONS
+   ===================================== */
+
+button {
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+}
+
+#skip-animation {
+
+    display: block;
+
+    margin-top: 32px;
+
+    padding: 12px 0;
+
+    border: none;
+    background: transparent;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+}
+
+#skip-animation:hover {
+
+    color: var(--green);
+
+}
+
+#continue-button {
+
+    width: 100%;
+
+    margin-top: 24px;
+    padding: 17px 12px;
+
+    background: var(--green);
+
+    border: 1px solid var(--green);
+
+    color: #07110c;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    animation: appear 0.5s ease both;
+
+}
+
+#continue-button:hover {
+
+    background: #c4ffda;
+
+}
+
+@keyframes appear {
+
+    from {
+
+        opacity: 0;
+        transform: translateY(8px);
+
+    }
+
+    to {
+
+        opacity: 1;
+        transform: translateY(0);
+
+    }
+
+}
+
+/* =====================================
+   PEU DE PÀGINA
+   ===================================== */
+
+.report-footer {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border-top: 1px solid var(--line);
+
+    padding-top: 18px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+}
+
+/* =====================================
+   ADAPTACIÓ A MÒBILS
+   ===================================== */
+
+@media (max-width: 520px) {
+
+    .report-shell {
+
+        padding: 23px 20px 20px;
+
+    }
+
+    .report {
+
+        padding: 30px 0;
+
+    }
+
+    #report-content {
+
+        font-size: 13px;
+        line-height: 1.8;
+
+    }
+
+    .report-footer {
+
+        font-size: 9px;
+
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    * {
+
+        animation: none !important;
+
+    }
+
+}

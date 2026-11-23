@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>C.U.M. | Triangulación</title>
+
+    <link rel="stylesheet" href="calibracion.css">
+    <link rel="stylesheet" href="triangulacion.css">
+
+    <script src="config.js" defer></script>
+    <script src="triangulacion.js" defer></script>
+</head>
+
+<body class="access-pending">
+
+    <main class="game-shell">
+
+        <!-- CAPÇALERA -->
+
+        <header class="topbar">
+            <a href="index.html" class="brand">C.U.M.</a>
+            <span class="phase">OP-067 / FASE 02</span>
+        </header>
+
+        <!-- INSTRUCCIONS -->
+
+        <section class="intro">
+
+            <p class="eyebrow">
+                FRECUENCIA RECUPERADA
+            </p>
+
+            <h1>Triangulación de señal</h1>
+
+            <p>
+                Agente Marianne, hemos delimitado el origen
+                de la transmisión al campus de Montilivi.
+                Identifique tres puntos de referencia para
+                desplegar las estaciones de rastreo.
+            </p>
+
+        </section>
+
+        <!-- MAPA -->
+
+        <section class="map-panel">
+
+            <div class="map-header">
+                <span>MAPA DE OPERACIONES</span>
+                <span id="node-counter">0/3 NODOS</span>
+            </div>
+
+            <div class="map-container">
+
+                <svg id="campus-map"
+                     viewBox="0 0 1141 798"
+                     xmlns="http://www.w3.org/2000/svg"
+                     role="img"
+                     aria-label="Mapa del campus de Montilivi con las estaciones de rastreo">
+
+                    <image
+                        class="map-background"
+                        href="Uni.png"
+                        width="1141"
+                        height="798"
+                    />
+
+                    <!-- Connexions entre nodes -->
+                    <g id="network-lines"></g>
+
+                    <!-- Node A: Aulari Comú -->
+                    <g id="node-a" class="map-node">
+
+                        <circle class="node-wave"
+                                cx="236" cy="562" r="20"/>
+
+                        <circle class="node-core"
+                                cx="236" cy="562" r="9"/>
+
+                        <text x="253" y="548">A</text>
+
+                    </g>
+
+                    <!-- Node B: Biblioteca -->
+                    <g id="node-b" class="map-node">
+
+                        <circle class="node-wave"
+                                cx="605" cy="614" r="20"/>
+
+                        <circle class="node-core"
+                                cx="605" cy="614" r="9"/>
+
+                        <text x="622" y="600">B</text>
+
+                    </g>
+
+                    <!-- Node C: P2 -->
+                    <g id="node-c" class="map-node">
+
+                        <circle class="node-wave"
+                                cx="785" cy="361" r="20"/>
+
+                        <circle class="node-core"
+                                cx="785" cy="361" r="9"/>
+
+                        <text x="802" y="347">C</text>
+
+                    </g>
+
+                    <!-- Punt final de la triangulació -->
+                    <g id="target-layer"></g>
+
+                </svg>
+
+            </div>
+
+            <div class="map-footer">
+                CAMPUS MONTILIVI // SECTOR 067
+            </div>
+
+        </section>
+
+        <!-- IDENTIFICACIÓ DELS PUNTS -->
+
+        <section id="reference-points" class="references">
+
+            <p class="eyebrow">
+                IDENTIFICACIÓN DE ESTACIONES
+            </p>
+
+            <!-- Punt A -->
+
+            <form class="reference-card" data-point="a">
+
+                <span class="reference-id">ESTACIÓN A</span>
+
+                <label for="answer-a">
+                    Edificio que comparten estudiantes
+                    de diferentes facultades.
+                </label>
+
+                <div class="answer-row">
+
+                    <input id="answer-a"
+                           type="text"
+                           placeholder="Identificar ubicación..."
+                           autocomplete="off"
+                           required>
+
+                    <button type="submit"
+                            aria-label="Confirmar estación A">
+                        ✓
+                    </button>
+
+                </div>
+
+                <p class="answer-feedback"
+                   aria-live="polite"></p>
+
+            </form>
+
+            <!-- Punt B -->
+
+            <form class="reference-card" data-point="b">
+
+                <span class="reference-id">ESTACIÓN B</span>
+
+                <label for="answer-b">
+                    Lugar donde se supone que vienes
+                    a estudiar.
+                </label>
+
+                <div class="answer-row">
+
+                    <input id="answer-b"
+                           type="text"
+                           placeholder="Identificar ubicación..."
+                           autocomplete="off"
+                           required>
+
+                    <button type="submit"
+                            aria-label="Confirmar estación B">
+                        ✓
+                    </button>
+
+                </div>
+
+                <p class="answer-feedback"
+                   aria-live="polite"></p>
+
+            </form>
+
+            <!-- Punt C -->
+
+            <form class="reference-card" data-point="c">
+
+                <span class="reference-id">ESTACIÓN C</span>
+
+                <label for="answer-c">
+                    Segundo edificio de la Escuela
+                    Politécnica Superior.
+                </label>
+
+                <div class="answer-row">
+
+                    <input id="answer-c"
+                           type="text"
+                           placeholder="Identificar ubicación..."
+                           autocomplete="off"
+                           required>
+
+                    <button type="submit"
+                            aria-label="Confirmar estación C">
+                        ✓
+                    </button>
+
+                </div>
+
+                <p class="answer-feedback"
+                   aria-live="polite"></p>
+
+            </form>
+
+        </section>
+
+        <!-- MINIJOC DE SINCRONITZACIÓ -->
+
+        <section id="references-completed" hidden>
+
+            <p class="eyebrow">
+                SINCRONIZACIÓN DE ESTACIONES
+            </p>
+
+            <h2 id="alignment-title">
+                Alinear la red de rastreo
+            </h2>
+
+            <p>
+                Las estaciones están interconectadas.
+                Al girar una de ellas, las demás también
+                modificarán su orientación.
+                Establezca los tres enlaces simultáneamente.
+            </p>
+
+            <!-- Selecció del node -->
+
+            <div class="station-selector">
+
+                <button type="button" data-station="a">
+                    AULARIO
+                </button>
+
+                <button type="button" data-station="b">
+                    BIBLIOTECA
+                </button>
+
+                <button type="button" data-station="c">
+                    P2
+                </button>
+
+            </div>
+
+            <!-- Controls de rotació -->
+
+            <div class="rotation-controls">
+
+                <button id="rotate-left" type="button">
+                    ↶ IZQUIERDA
+                </button>
+
+                <button id="rotate-right" type="button">
+                    DERECHA ↷
+                </button>
+
+            </div>
+
+            <!-- Estat del minijoc -->
+
+            <div class="alignment-status">
+
+                <span id="connection-counter">
+                    0/3 ENLACES
+                </span>
+
+                <span id="move-counter">
+                    0 MOVIMIENTOS
+                </span>
+
+            </div>
+
+            <button id="reset-alignment"
+                    class="reset-button"
+                    type="button">
+                REINICIAR SINCRONIZACIÓN
+            </button>
+
+        </section>
+
+        <!-- RESULTAT DE LA TRIANGULACIÓ -->
+
+        <section id="location-result" hidden>
+
+            <p class="eyebrow">
+                ✓ TRIANGULACIÓN COMPLETADA
+            </p>
+
+            <h2>Ubicación identificada</h2>
+
+            <p>
+                Agente Marianne, las tres estaciones han
+                confirmado el origen de la transmisión.
+            </p>
+
+            <!-- Fotografia real -->
+
+            <div class="location-image">
+
+                <img id="location-photo"
+                     data-src="ubicacion-final.jpg"
+                     alt="Referencia visual del origen de la señal"
+                     hidden>
+
+            </div>
+
+            <p id="photo-feedback"
+               aria-live="polite"></p>
+
+            <p>
+                Diríjase a la ubicación indicada e inspeccione
+                la zona utilizando el dispositivo ultravioleta
+                proporcionado.
+            </p>
+
+            <!-- FORMULARI DEL CODI UV -->
+
+            <form id="uv-form" class="uv-form">
+
+                <p class="eyebrow">
+                    INFORMACIÓN OCULTA DETECTADA
+                </p>
+
+                <p>
+                    Nuestros sistemas indican que existe
+                    un mensaje oculto en la zona localizada.
+                    Recupere la clave de acceso e introdúzcala
+                    a continuación.
+                </p>
+
+                <label for="uv-code">
+                    CÓDIGO RECUPERADO
+                </label>
+
+                <input
+                    id="uv-code"
+                    type="text"
+                    placeholder="Introducir código..."
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    maxlength="64"
+                    required
+                >
+
+                <button type="submit">
+                    VERIFICAR CÓDIGO
+                </button>
+
+                <p id="uv-feedback"
+                   aria-live="polite"></p>
+
+            </form>
+
+            <!-- CONFIRMACIÓ DEL CODI UV -->
+
+            <div id="uv-completed" hidden>
+
+                <p class="eyebrow">
+                    ✓ CÓDIGO VALIDADO
+                </p>
+
+                <h2>Acceso autorizado</h2>
+
+                <p>
+                    La clave ha sido verificada
+                    correctamente.
+                </p>
+
+                <p>
+                    Hemos conseguido recuperar un nuevo
+                    archivo relacionado con el objeto
+                    desaparecido.
+                </p>
+
+                <p class="uv-success">
+                    NUEVO ARCHIVO DESBLOQUEADO
+                </p>
+
+            </div>
+
+            <div class="location-status">
+                OBJETIVO LOCALIZADO // 100%
+            </div>
+
+        </section>
+
+        <!-- PEU DE PÀGINA -->
+
+        <footer class="footer">
+
+            <span>
+                C.U.M. // CANAL RESTRINGIDO
+            </span>
+
+            <span id="clock">--:--:--</span>
+
+        </footer>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#06100b">
+  <title>C.U.M. | Calibración de señal</title>
+  <link rel="stylesheet" href="calibracion.css">
+  <script src="config.js" defer></script>
+  <script src="calibracion.js" defer></script>
+</head>
+<body class="access-pending">
+  <main class="game-shell">
+    <header class="topbar">
+      <a href="index.html" class="brand" aria-label="Volver a C.U.M.">C.U.M.</a>
+      <span class="phase">OP-067 / FASE 01</span>
+    </header>
+
+    <section class="intro">
+      <p class="eyebrow">RECEPTOR RX-01 · TRANSMISIÓN CORRUPTA</p>
+      <h1>Recuperar la señal</h1>
+      <p>Agente Marianne, necesitamos recuperar la frecuencia de origen. Ajuste el receptor: <strong>cuanto más cerca esté de la frecuencia correcta, mayor será la intensidad de la señal.</strong></p>
+    </section>
+
+    <section class="receiver" aria-label="Calibración del receptor">
+      <p class="small-label">FRECUENCIA ACTUAL</p>
+      <div class="frequency"><output id="frequency-readout" for="frequency-slider">89.5</output><span>MHz</span></div>
+
+      <label class="visually-hidden" for="frequency-slider">Ajustar frecuencia del receptor</label>
+      <input id="frequency-slider" type="range" min="87.5" max="108" step="0.1" value="89.5">
+      <div class="limits"><span>87.5</span><span>108.0 MHz</span></div>
+
+      <div class="tune-buttons">
+        <button type="button" id="frequency-minus" aria-label="Reducir 0,1 MHz">− 0.1</button>
+        <button type="button" id="frequency-plus" aria-label="Aumentar 0,1 MHz">+ 0.1</button>
+      </div>
+
+      <div class="signal">
+        <div class="signal-heading"><span>INTENSIDAD DE SEÑAL</span><strong id="signal-value">08%</strong></div>
+        <div id="signal-meter" class="meter" role="progressbar" aria-label="Intensidad de señal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="8"><span id="signal-fill" style="width:8%"></span></div>
+      </div>
+
+      <p class="feedback" id="frequency-feedback" role="status" aria-live="polite">Interferencias detectadas. Buscando señal...</p>
+    </section>
+
+    <footer class="footer"><span>C.U.M. // CANAL RESTRINGIDO</span><span id="clock">--:--:--</span></footer>
+  </main>
+</body>
+</html>
