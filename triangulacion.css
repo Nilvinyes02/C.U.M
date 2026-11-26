@@ -648,3 +648,50 @@
     }
 
 }
+
+/* =====================================
+   ACCÉS A LA TERCERA TRANSMISSIÓ
+   ===================================== */
+
+.uv-continue {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 20px;
+    padding: 15px;
+
+    background: #9df0bf;
+    color: #07110c;
+
+    border: 1px solid #9df0bf;
+    border-radius: 0;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.uv-continue:hover {
+    background: #c4ffda;
+}
+
+.uv-continue:active {
+    background: #7ac99b;
+}
+
+.uv-continue:focus-visible {
+    outline: 2px solid #9df0bf;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .uv-continue {
+        transition: none;
+    }
+}
+
+

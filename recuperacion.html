@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#07140d">
+    <title>C.U.M. | Protocolo de recuperación</title>
+    <link rel="stylesheet" href="recuperacion.css">
+    <script src="config.js" defer></script>
+    <script src="recuperacion.js" defer></script>
+</head>
+<body class="access-pending">
+<main class="shell">
+    <header class="topbar">
+        <strong>C.U.M.</strong>
+        <span>OP-067 // FASE 05</span>
+    </header>
+
+    <!-- ÚLTIMA PROVA -->
+    <section id="recovery">
+        <p class="eyebrow">PROTOCOLO FINAL DE RECUPERACIÓN</p>
+        <h1>Contenedor de seguridad</h1>
+
+        <div class="panel">
+            <div class="container-image">
+                <img id="box-photo" data-src="cluebox.png"
+                     alt="Contenedor mecánico de seguridad" hidden>
+                <svg id="box-symbol" viewBox="0 0 160 120" width="160"
+                     role="img" aria-label="Símbolo de contenedor bloqueado">
+                    <g fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M25 39 80 13 135 39 80 66Z M25 39V88L80 113 135 88V39 M80 66V113"/>
+                        <path d="M44 30 99 56 M61 22 116 48 M25 55 80 81 135 55 M25 72 80 97 135 72" opacity=".35"/>
+                        <rect x="65" y="67" width="30" height="24" rx="2" fill="#10271a"/>
+                        <path d="M71 67V59a9 9 0 0 1 18 0v8 M80 76v8"/>
+                    </g>
+                </svg>
+            </div>
+            <div class="details">
+                <p>IDENTIFICADOR: CT-067</p>
+                <p>TIPO: CONTENEDOR MECÁNICO</p>
+                <p class="warning">ESTADO: BLOQUEADO</p>
+                <p class="green">LOCALIZACIÓN: CONFIRMADA</p>
+            </div>
+            <p>Agente Panchita, deberá localizar el contenedor, superar su mecanismo de seguridad y recuperar la clave que se encuentra en su interior.</p>
+            <p class="eyebrow section-label">INSTRUCCIONES DE LOCALIZACIÓN</p>
+            <div id="location-clue" class="clue"></div>
+
+            <form id="final-form">
+                <label for="final-code">CLAVE DE RECUPERACIÓN</label>
+                <input id="final-code" type="text" placeholder="Introducir código..."
+                       autocomplete="off" autocapitalize="characters"
+                       spellcheck="false" maxlength="64" required>
+                <button type="submit">FINALIZAR OPERACIÓN →</button>
+                <p id="feedback" role="status"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- REVELACIÓ FINAL -->
+    <section id="final-screen" hidden>
+        <div class="panel final-panel">
+            <p class="eyebrow">OPERACIÓN OP-067 // INFORME FINAL</p>
+            <div class="success-icon" aria-hidden="true">✓</div>
+            <h1 id="final-title" tabindex="-1">MISIÓN COMPLETADA</h1>
+            <p class="green">OBJETO RECUPERADO CORRECTAMENTE</p>
+            <div class="final-details">
+                <p>AGENTE: PANCHITA <span>✓</span></p>
+                <p>OPERACIÓN: OP-067 <span>✓</span></p>
+                <p>ESTADO: COMPLETADA <span>✓</span></p>
+            </div>
+            <div class="reveal">
+                <p class="eyebrow">NATURALEZA DEL OBJETO DESCLASIFICADA</p>
+                <p>El objeto desaparecido que ha estado buscando durante toda la operación era, en realidad...</p>
+                <h2>¡TU REGALO!</h2>
+                <p>Enhorabuena, agente Marianne. Has superado todas las pruebas. Ahora solo queda disfrutar de tu recompensa.</p>
+            </div>
+            <h2 class="birthday">¡Feliz cumpleaños, Panchita!</h2>
+            <p class="eyebrow closing">C.U.M. // FIN DE LA OPERACIÓN_</p>
+        </div>
+    </section>
+
+    <footer>
+        <span>C.U.M. // CANAL RESTRINGIDO</span>
+        <span id="clock">--:--:--</span>
+    </footer>
+</main>
+</body>
+</html>

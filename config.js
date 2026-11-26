@@ -12,15 +12,15 @@ window.CUM_CONFIG = {
 
   // Codi imprès a la targeta que acompanya el QR (exemples per provar).
   // Canvia'ls abans del dia de la gincana. No són seguretat real.
-  idAgente: 'CUM-001',
-  claveAcceso: '4172',
+  idAgente: 'PANCHITA',
+  claveAcceso: '0326',
 
   // Fins a aquesta data i hora, la primera missió queda bloquejada.
   // Format: 'AAAA-MM-DDTHH:mm:ss+01:00' a l'hivern a Espanya;
   // o 'AAAA-MM-DDTHH:mm:ss+02:00' durant l'horari d'estiu.
   // Exemple: '2026-12-12T11:00:00+01:00'
   // Per ara, deixa-ho buit i la missió quedarà sempre bloquejada.
-  desbloqueo: '',
+  desbloqueo: '2026-11-26T10:00:00+01:00',
 
   // Freqüència de prova. Canvia-la quan decidim l'enigma definitiu.
   frecuenciaObjetivo: 96.7

@@ -6,7 +6,6 @@
     'use strict';
 
     const $ = selector => document.querySelector(selector);
-
     const config = window.CUM_CONFIG || {};
 
     const params = new URLSearchParams(
@@ -14,7 +13,6 @@
     );
 
     const demo = params.get('demo') === '1';
-
     const fase = params.get('fase') || '1';
 
 
@@ -25,9 +23,7 @@
     const informes = {
 
         '1': {
-
             referencia: 'TX-01',
-
             titol: 'Señal interceptada',
 
             paragrafs: [
@@ -47,15 +43,11 @@
             ],
 
             boto: 'ACCEDER AL RECEPTOR →',
-
             seguent: 'calibracion.html'
-
         },
 
         '2': {
-
             referencia: 'TX-02',
-
             titol: 'Origen desconocido',
 
             paragrafs: [
@@ -73,10 +65,57 @@
             ],
 
             boto: 'INICIAR TRIANGULACIÓN →',
-
             seguent: 'triangulacion.html'
+        },
 
+        '3': {
+            referencia: 'TX-03',
+            titol: 'Archivo protegido',
+
+            paragrafs: [
+
+                'Excelente trabajo, agente Marianne.',
+
+                'La clave recuperada nos ha permitido acceder a un servidor que contiene información relacionada con el objeto desaparecido.',
+
+                'Sin embargo, el archivo se encuentra encriptado y protegido por un sistema de seguridad activo.',
+
+                'Para esta operación, hemos preparado una unidad de infiltración digital especialmente adaptada a usted: UMBREON-01.',
+
+                'Su misión será recuperar los tres fragmentos del archivo, evitar los sistemas de seguridad y alcanzar el núcleo de descifrado.',
+
+                'Si la operación tiene éxito, podremos recuperar la información necesaria para localizar el objeto.',
+
+                'Buena suerte, agente Panchita.'
+
+            ],
+
+            boto: 'INICIAR INFILTRACIÓN →',
+            seguent: 'infiltracion.html'
+        },
+
+        '4': {
+            referencia: 'TX-04',
+            titol: 'Protocolo de recuperación',
+
+            paragrafs: [
+
+                'Excelente trabajo, agente Panchita.',
+
+                'El archivo ha sido descifrado correctamente. Tras analizar la información recuperada, hemos conseguido determinar el paradero del objeto desaparecido.',
+
+                'Sin embargo, el objeto permanece protegido por un mecanismo de seguridad físico que nuestros especialistas no han conseguido abrir.',
+
+                'Necesitamos su intervención una última vez.',
+
+                'Está muy cerca de completar su misión, agente Panchita.'
+
+            ],
+
+            boto: 'CONSULTAR ÚLTIMAS INSTRUCCIONES →',
+            seguent: 'recuperacion.html'
         }
+        
 
     };
 
@@ -139,6 +178,62 @@
 
         }
 
+        // L'informe 3 requereix haver validat
+        // correctament el codi UV.
+
+        if (fase === '3') {
+
+            let codiValidat = false;
+
+            try {
+
+                codiValidat =
+                    localStorage.getItem(
+                        'cum-fase03-completada'
+                    ) === '1';
+
+            } catch (_) {}
+
+            if (!codiValidat) {
+
+                window.location.replace(
+                    'triangulacion.html'
+                );
+
+                return;
+
+            }
+
+        }
+
+        // L'informe 4 requereix haver completat
+        // el videojoc d'infiltració.
+
+        if (fase === '4') {
+
+            let infiltracioCompletada = false;
+
+            try {
+
+                infiltracioCompletada =
+                    localStorage.getItem(
+                        'cum-fase04-completada'
+                    ) === '1';
+
+            } catch (_) {}
+
+            if (!infiltracioCompletada) {
+
+                window.location.replace(
+                    'infiltracion.html'
+                );
+
+                return;
+
+            }
+
+        }
+
     }
 
 
@@ -150,17 +245,13 @@
     // =====================================
 
     const contingut = $('#report-content');
-
     const cursor = $('#cursor');
-
     const botoContinuar = $('#continue-button');
-
     const botoOmetre = $('#skip-animation');
 
     $('#report-title').textContent = informe.titol;
 
     $('#report-reference').textContent =
-
         `${config.expediente || 'OP-067'} // ${informe.referencia}`;
 
     botoContinuar.textContent = informe.boto;
@@ -171,21 +262,16 @@
     // =====================================
 
     // Mil·lisegons entre cada caràcter.
-
     const velocitatText = 18;
 
     // Pausa entre paràgrafs.
-
     const pausaParagraf = 350;
 
     let paragrafActual = 0;
-
     let caracterActual = 0;
 
     let elementParagraf = null;
-
     let textNode = null;
-
     let temporitzador = null;
 
     let animacioAcabada = false;
@@ -229,7 +315,6 @@
         if (paragrafActual >= informe.paragrafs.length) {
 
             acabarAnimacio();
-
             return;
 
         }
@@ -267,25 +352,18 @@
         if (caracterActual >= text.length) {
 
             caracterActual = 0;
-
             paragrafActual++;
 
             temporitzador = setTimeout(
-
                 escriureText,
-
                 pausaParagraf
-
             );
 
         } else {
 
             temporitzador = setTimeout(
-
                 escriureText,
-
                 velocitatText
-
             );
 
         }
@@ -304,7 +382,6 @@
         clearTimeout(temporitzador);
 
         cursor.hidden = true;
-
         botoOmetre.hidden = true;
 
         $('#report-end').hidden = false;
@@ -338,11 +415,8 @@
 
 
     botoOmetre.addEventListener(
-
         'click',
-
         ometreAnimacio
-
     );
 
 
@@ -355,9 +429,7 @@
         if (!animacioAcabada) return;
 
         window.location.href = demo
-
             ? `${informe.seguent}?demo=1`
-
             : informe.seguent;
 
     });
@@ -370,13 +442,10 @@
     function actualitzarRellotge() {
 
         $('#clock').textContent =
-
             new Date().toLocaleTimeString('es-ES', {
 
                 hour: '2-digit',
-
                 minute: '2-digit',
-
                 second: '2-digit'
 
             });
@@ -401,11 +470,8 @@
     } else {
 
         temporitzador = setTimeout(
-
             escriureText,
-
             500
-
         );
 
     }

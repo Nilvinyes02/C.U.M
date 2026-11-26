@@ -1,0 +1,589 @@
+
+/* C.U.M. — PROTOCOL D'INFILTRACIÓ */
+
+:root {
+    color-scheme: dark;
+    --bg: #071118;
+    --panel: #0b1c1a;
+    --green: #9df0bf;
+    --muted: #89a99a;
+    --line: #2e5342;
+    --light: #dceee4;
+    --gold: #f2cf78;
+    --red: #ff777b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    background:
+        radial-gradient(
+            ellipse at top,
+            #142c23 0,
+            transparent 65%
+        ),
+        var(--bg);
+
+    color: var(--light);
+    font-family: Consolas, 'Courier New', monospace;
+    min-height: 100dvh;
+}
+
+.shell {
+    width: min(100%, 830px);
+    margin: auto;
+    padding: 22px 16px 18px;
+}
+
+/* =====================================
+   CAPÇALERA I INTRODUCCIÓ
+   ===================================== */
+
+.topbar,
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.topbar {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 15px;
+}
+
+.topbar strong {
+    color: var(--green);
+    font-size: 24px;
+    letter-spacing: 3px;
+}
+
+.intro {
+    padding: 20px 0 16px;
+}
+
+.eyebrow {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--green);
+    margin: 0 0 10px;
+}
+
+h1,
+h2 {
+    font-family: system-ui, sans-serif;
+    line-height: 1.15;
+    margin: 8px 0 12px;
+}
+
+h1 {
+    font-size: clamp(24px, 5vw, 33px);
+}
+
+h2 {
+    font-size: 22px;
+}
+
+.intro > p:last-child,
+.result p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #b5cfc0;
+    margin: 0;
+}
+
+/* =====================================
+   CONTENIDORS
+   ===================================== */
+
+.game,
+.files,
+.result {
+    background: #091814;
+    border: 1px solid var(--line);
+    padding: 12px;
+}
+
+/* =====================================
+   MARCADORS
+   ===================================== */
+
+.hud {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.hud > div {
+    border: 1px solid var(--line);
+    padding: 8px 5px;
+    display: grid;
+    gap: 5px;
+    text-align: center;
+}
+
+.hud small {
+    color: var(--muted);
+    font-size: 9px;
+}
+
+.hud strong {
+    font-size: clamp(10px, 3vw, 15px);
+    color: var(--green);
+}
+
+#lives {
+    color: var(--red);
+    white-space: nowrap;
+}
+
+#access {
+    color: var(--gold);
+}
+
+#access.open {
+    color: var(--green);
+}
+
+/* =====================================
+   MAPA DEL VIDEOJOC
+   ===================================== */
+
+.screen {
+    position: relative;
+    border: 1px solid #4e996a;
+    background: #07120f;
+    box-shadow: 0 0 12px #4ce58416;
+    overflow: hidden;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    touch-action: none;
+}
+
+/* Pantalla inicial i pausa */
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: #04110eea;
+    display: grid;
+    place-items: center;
+    padding: 12px;
+    text-align: center;
+}
+
+.overlay-inner {
+    max-width: 350px;
+}
+
+.overlay h2 {
+    font-size: clamp(18px, 5vw, 26px);
+}
+
+.overlay p:not(.eyebrow) {
+    font-size: 12px;
+    color: #abc6b5;
+    line-height: 1.5;
+    margin: 8px 0 14px;
+}
+
+/* =====================================
+   BOTONS
+   ===================================== */
+
+button {
+    font: inherit;
+    font-weight: bold;
+    font-size: 11px;
+
+    color: var(--green);
+
+    border: 1px solid #4b785b;
+    background: #142d21;
+
+    cursor: pointer;
+    padding: 12px 8px;
+
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+button:active,
+.dpad button.pressed {
+    background: #386348;
+    color: white;
+}
+
+button:disabled {
+    opacity: .35;
+    cursor: default;
+}
+
+#start {
+    background: var(--green);
+    color: #081711;
+    padding: 12px 16px;
+}
+
+/* =====================================
+   MISSATGES DEL SISTEMA
+   ===================================== */
+
+.log {
+    min-height: 44px;
+    padding: 10px 2px;
+
+    font-size: 11px;
+    line-height: 1.4;
+
+    color: var(--green);
+    border-bottom: 1px solid var(--line);
+}
+
+/* =====================================
+   CONTROLS TÀCTILS
+   ===================================== */
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 12px;
+}
+
+.dpad {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, clamp(42px, 13vw, 53px));
+
+    grid-template-rows:
+        repeat(3, clamp(39px, 11vw, 48px));
+
+    gap: 4px;
+    touch-action: none;
+}
+
+.dpad button {
+    font-size: 25px;
+    padding: 0;
+    touch-action: none;
+}
+
+.dpad [data-dir=up] {
+    grid-area: 1 / 2;
+}
+
+.dpad [data-dir=left] {
+    grid-area: 2 / 1;
+}
+
+.dpad [data-dir=right] {
+    grid-area: 2 / 3;
+}
+
+.dpad [data-dir=down] {
+    grid-area: 3 / 2;
+}
+
+.dpad-center {
+    grid-area: 2 / 2;
+    display: grid;
+    place-items: center;
+    color: #527662;
+    font-size: 20px;
+}
+
+.actions {
+    display: grid;
+    gap: 7px;
+    min-width: 105px;
+}
+
+.actions button {
+    font-size: 10px;
+}
+
+.hint {
+    font-size: 10px;
+    color: var(--muted);
+    margin: 12px 0 0;
+    text-align: center;
+}
+
+/* =====================================
+   REGISTRE D'ARXIUS
+   ===================================== */
+
+.files,
+.result {
+    margin-top: 16px;
+}
+
+.file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    border-top: 1px solid #244536;
+
+    padding: 10px 2px;
+    font-size: 11px;
+    color: #779184;
+}
+
+.file strong {
+    font-weight: normal;
+}
+
+.file.recovered {
+    color: var(--green);
+}
+
+.file span {
+    font-size: 9px;
+    white-space: nowrap;
+}
+
+/* =====================================
+   BARRA DE PROGRÉS
+   ===================================== */
+
+.progress {
+    height: 10px;
+    background: #193b27;
+    border: 1px solid var(--line);
+    margin: 17px 0 6px;
+}
+
+.progress > div {
+    height: 100%;
+    width: 0;
+    background: var(--green);
+    transition: width .13s linear;
+}
+
+#percent {
+    text-align: right;
+    color: var(--green);
+}
+
+#message p {
+    margin-top: 12px;
+}
+
+#message .eyebrow {
+    color: var(--green);
+    font-size: 11px;
+}
+
+/* =====================================
+   PEU DE PÀGINA
+   ===================================== */
+
+footer {
+    border-top: 1px solid var(--line);
+    margin-top: 22px;
+    padding: 14px 0;
+    font-size: 9px;
+}
+
+/* =====================================
+   ANIMACIÓ DE DESXIFRATGE
+   ===================================== */
+
+.decrypt-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+
+    display: grid;
+    place-items: center;
+
+    overflow-y: auto;
+
+    padding: 16px;
+
+    background: #030b08f5;
+
+    backdrop-filter: blur(5px);
+}
+
+.decrypt-panel {
+    width: min(100%, 580px);
+
+    max-height: 100%;
+    overflow-y: auto;
+
+    padding: 24px;
+
+    border: 1px solid #4c8a64;
+
+    background: #091814;
+
+    box-shadow: 0 0 35px #9df0bf16;
+}
+
+.decrypt-panel > p:not(.eyebrow),
+#message p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #b5cfc0;
+}
+
+/* Llista dels tres arxius */
+
+.decrypt-files {
+    margin: 22px 0;
+    border: 1px solid var(--line);
+    padding: 8px 12px;
+    background: #07130d;
+}
+
+.decrypt-file {
+    padding: 10px 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.decrypt-file + .decrypt-file {
+    border-top: 1px solid #244536;
+}
+
+.decrypt-file span {
+    display: inline-block;
+    width: 34px;
+}
+
+.decrypt-file.done {
+    color: var(--green);
+}
+
+/* Progrés del desxifratge */
+
+.decrypt-label {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 8px;
+
+    font-size: 11px;
+    color: var(--green);
+}
+
+.decrypt-panel .progress {
+    height: 15px;
+    margin: 10px 0 14px;
+}
+
+/* Registre de l'activitat */
+
+#decrypt-log {
+    min-height: 48px;
+    padding: 12px;
+
+    border: 1px solid var(--line);
+    background: #06110c;
+}
+
+/* Missatge de desxifratge completat */
+
+#message {
+    border-top: 1px solid var(--line);
+    margin-top: 18px;
+    padding-top: 8px;
+}
+
+#message .decrypt-success {
+    color: var(--green);
+    font-weight: bold;
+}
+
+#decrypt-continue {
+    width: 100%;
+
+    background: var(--green);
+    color: #081711;
+
+    margin-top: 10px;
+    padding: 15px;
+}
+
+#decrypt-continue:hover {
+    background: #c4ffda;
+}
+
+.result p + p {
+    margin-top: 10px;
+}
+
+/* =====================================
+   ADAPTACIÓ A MÒBILS
+   ===================================== */
+
+@media (max-width: 430px) {
+
+    .shell {
+        padding: 15px 6px;
+    }
+
+    .intro {
+        padding: 16px 0 12px;
+    }
+
+    .game {
+        padding: 6px;
+    }
+
+    .hud small {
+        font-size: 8px;
+    }
+
+    .hud > div {
+        padding: 6px 2px;
+    }
+
+    .controls {
+        padding: 8px 6px 0;
+    }
+
+    .decrypt-panel {
+        padding: 17px;
+    }
+
+    .decrypt-file {
+        font-size: 12px;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .progress > div {
+        transition: none;
+    }
+
+}

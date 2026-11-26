@@ -14,7 +14,7 @@
     // Canviar aquest valor pel codi definitiu
     // que trobarà escrit amb tinta invisible.
 
-    const CODI_UV = '4827';
+    const CODI_UV = '4210';
 
 
     // =====================================
@@ -1077,6 +1077,20 @@
 
     });
 
+
+    // =====================================
+    // ACCÉS A LA TERCERA TRANSMISSIÓ
+    // =====================================
+
+    $('#uv-continue').addEventListener('click', () => {
+
+        if (!codiUVValidat) return;
+
+        window.location.href = demo
+            ? 'informe.html?fase=3&demo=1'
+            : 'informe.html?fase=3';
+
+    });
 
     // =====================================
     // RELLOTGE

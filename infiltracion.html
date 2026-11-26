@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>C.U.M. | Protocolo de infiltración</title>
+
+    <link rel="stylesheet" href="infiltracion.css">
+    <script src="infiltracion.js" defer></script>
+</head>
+
+<body>
+
+<main class="shell">
+
+    <!-- CAPÇALERA -->
+
+    <header class="topbar">
+        <strong>C.U.M.</strong>
+        <span>OP-067 / FASE 04</span>
+    </header>
+
+    <!-- INTRODUCCIÓ -->
+
+    <section class="intro">
+
+        <p class="eyebrow">
+            ARCHIVO ENCRIPTADO // ACCESO RESTRINGIDO
+        </p>
+
+        <h1>Protocolo de infiltración</h1>
+
+        <p>
+            Agente Panchita, controle la unidad UMBREON-01.
+            Recupere los tres fragmentos del archivo,
+            evite los antivirus y alcance el núcleo
+            de descifrado.
+        </p>
+
+    </section>
+
+    <!-- VIDEOJOC -->
+
+    <section class="game"
+             aria-label="Minijuego de infiltración">
+
+        <!-- Marcadors -->
+
+        <div class="hud">
+
+            <div>
+                <small>FRAGMENTOS</small>
+                <strong id="data-count">0/3</strong>
+            </div>
+
+            <div>
+                <small>VIDAS</small>
+                <strong id="lives" aria-label="3 vidas">
+                    ♥ ♥ ♥
+                </strong>
+            </div>
+
+            <div>
+                <small>ACCESO</small>
+                <strong id="access">BLOQUEADO</strong>
+            </div>
+
+        </div>
+
+        <!-- Mapa -->
+
+        <div class="screen">
+
+            <canvas id="board"
+                    width="760"
+                    height="680"
+                    aria-label="Laberinto del servidor. Use las flechas o los controles táctiles.">
+            </canvas>
+
+            <!-- Pantalla inicial i pausa -->
+
+            <div id="overlay" class="overlay">
+
+                <div class="overlay-inner">
+
+                    <p class="eyebrow" id="overlay-kicker">
+                        UNIDAD UMBREON-01
+                    </p>
+
+                    <h2 id="overlay-title">
+                        Infiltración lista
+                    </h2>
+
+                    <p id="overlay-text">
+                        Recupera los tres archivos amarillos.
+                        Los antivirus rojos patrullan
+                        el servidor.
+                        Dispones de tres vidas.
+                    </p>
+
+                    <button id="start" type="button">
+                        INICIAR INFILTRACIÓN
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Missatges del sistema -->
+
+        <div class="log" role="status" id="log">
+            &gt; Esperando autorización de la agente...
+        </div>
+
+        <!-- CONTROLS -->
+
+        <div class="controls">
+
+            <div class="dpad"
+                 aria-label="Controles de movimiento">
+
+                <button type="button"
+                        data-dir="up"
+                        aria-label="Arriba">
+                    ↑
+                </button>
+
+                <button type="button"
+                        data-dir="left"
+                        aria-label="Izquierda">
+                    ←
+                </button>
+
+                <span class="dpad-center"
+                      aria-hidden="true">
+                    +
+                </span>
+
+                <button type="button"
+                        data-dir="right"
+                        aria-label="Derecha">
+                    →
+                </button>
+
+                <button type="button"
+                        data-dir="down"
+                        aria-label="Abajo">
+                    ↓
+                </button>
+
+            </div>
+
+            <div class="actions">
+
+                <button type="button"
+                        id="pause"
+                        disabled>
+                    PAUSA
+                </button>
+
+                <button type="button" id="restart">
+                    REINICIAR
+                </button>
+
+                <button type="button"
+                        id="sound"
+                        aria-pressed="true">
+                    SONIDO: SÍ
+                </button>
+
+            </div>
+
+        </div>
+
+        <p class="hint">
+            Móvil: mantén pulsadas las flechas.
+            PC: flechas o WASD.
+        </p>
+
+    </section>
+
+    <!-- REGISTRE D'ARXIUS -->
+
+    <section class="files"
+             aria-label="Archivos recuperados">
+
+        <p class="eyebrow">
+            REGISTRO DE DATOS
+        </p>
+
+        <div id="file-list"></div>
+
+    </section>
+
+    <!-- RESULTAT FINAL -->
+
+    <section id="result" class="result" hidden>
+
+        <p class="eyebrow">
+            C.U.M. // ARCHIVO RECUPERADO
+        </p>
+
+        <h2>Archivo descifrado</h2>
+
+        <p>
+            Excelente trabajo, agente Panchita.
+        </p>
+
+        <p>
+            Los datos recuperados permitirán localizar
+            el objeto desaparecido.
+        </p>
+
+        <p class="eyebrow">
+            ESPERANDO INSTRUCCIONES DE LA CENTRAL_
+        </p>
+
+    </section>
+
+    <footer>
+
+        <span>C.U.M. // CANAL RESTRINGIDO</span>
+        <span>UMBREON-01</span>
+
+    </footer>
+
+</main>
+
+<!-- =====================================
+     ANIMACIÓ DE DESXIFRATGE
+     ===================================== -->
+
+<div id="decrypt-overlay"
+     class="decrypt-overlay"
+     hidden>
+
+    <section class="decrypt-panel"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="decrypt-title">
+
+        <p class="eyebrow">
+            C.U.M. // SERVIDOR CENTRAL
+        </p>
+
+        <h2 id="decrypt-title">
+            Descifrando archivo...
+        </h2>
+
+        <p>
+            Integrando los fragmentos recuperados
+            por la unidad UMBREON-01.
+        </p>
+
+        <!-- Arxius recuperats -->
+
+        <div class="decrypt-files">
+
+            <div class="decrypt-file">
+                <span>[ ]</span> Trakatrá.ID
+            </div>
+
+            <div class="decrypt-file">
+                <span>[ ]</span> Bujarrada.LOG
+            </div>
+
+            <div class="decrypt-file">
+                <span>[ ]</span> SixSeven.DAT
+            </div>
+
+        </div>
+
+        <!-- Barra de progrés -->
+
+        <div class="decrypt-label">
+
+            <span>INTEGRIDAD DEL ARCHIVO</span>
+            <strong id="percent">0%</strong>
+
+        </div>
+
+        <div class="progress"
+             role="progressbar"
+             aria-label="Descifrado"
+             aria-valuemin="0"
+             aria-valuemax="100"
+             aria-valuenow="0">
+
+            <div id="progress-fill"></div>
+
+        </div>
+
+        <!-- Missatges del desxifratge -->
+
+        <p id="decrypt-log" role="status">
+            Iniciando protocolo de descifrado...
+        </p>
+
+        <!-- Confirmació final -->
+
+        <div id="message" hidden>
+
+            <p class="decrypt-success">
+                ✓ ARCHIVO RECUPERADO CORRECTAMENTE
+            </p>
+
+            <p>
+                La operación puede continuar.
+            </p>
+
+            <button id="decrypt-continue" type="button">
+                CONTINUAR →
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>
