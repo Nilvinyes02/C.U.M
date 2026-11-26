@@ -20,7 +20,7 @@ window.CUM_CONFIG = {
   // o 'AAAA-MM-DDTHH:mm:ss+02:00' durant l'horari d'estiu.
   // Exemple: '2026-12-12T11:00:00+01:00'
   // Per ara, deixa-ho buit i la missió quedarà sempre bloquejada.
-  desbloqueo: '2026-11-26T06:30:00+01:00',
+  desbloqueo: '2026-11-26T10:00:00+01:00',
 
   // Freqüència de prova. Canvia-la quan decidim l'enigma definitiu.
   frecuenciaObjetivo: 96.7
